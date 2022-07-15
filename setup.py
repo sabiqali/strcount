@@ -10,13 +10,13 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
 with open('requirements.txt') as f:
     requirements = f.readlines()
 
-VERSION = '0.0.5'
+VERSION = '0.0.6'
 DESCRIPTION = 'A package to count the number of repeats in a Short Tandem Repeat Expansion from long reads.'
 LONG_DESCRIPTION = long_description
 # Setting up
 setup(
     name="STRcount",
-    version="0.0.5",
+    version="0.0.6",
     author="Sabiq Chaudhary",
     author_email="<sabiq.work@gmail.com>",
     description="A package to count the number of repeats in a Short Tandem Repeat Expansion from long reads.",
@@ -25,6 +25,11 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     keywords=['python', 'STR', 'Repeats', 'Tandem Repeats'],
+    entry_points ={
+            'console_scripts': [
+                'STRcount = STRcount.STRcount:main'
+            ]
+        },
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
