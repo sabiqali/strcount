@@ -16,8 +16,8 @@ parser.add_argument('--prefix_orientation', help='the orientation of the prefix,
 parser.add_argument('--suffix_orientation', help='the orientation of the suffix, + or -', required=False, default="+")
 parser.add_argument('--cleanup', help='do you want to clean up the temporary file?', required=False, default="yes")
 parser.add_argument('--output_directory', help='the output directory for all output and temporary files', required=False, default="./")
-parser.add_argument('--multiseed-DP', help='Aligner option', required=False, default="./")
-parser.add_argument('--precise-clipping', help='Aligner option: use arg as the identity threshold for a valid alignment.', required=False, default="./")
+parser.add_argument('--multiseed-DP', help='Aligner option', required=False, default="")
+parser.add_argument('--precise-clipping', help='Aligner option: use arg as the identity threshold for a valid alignment.', required=False, default="")
 args = parser.parse_args()
 
 ref = args.reference
