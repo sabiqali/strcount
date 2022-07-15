@@ -27,7 +27,7 @@ setup(
         'os',
         'pysam',
         'sys',
-        'GraphAligner'
+        'wheel'
     ],
     keywords=['python', 'STR', 'Repeats', 'Tandem Repeats'],
     classifiers=[

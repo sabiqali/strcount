@@ -95,7 +95,7 @@ def main():
     else:
         logging.error("Error in aligning the reads to the reference graph")
 
-    parse_gaf = os.system(f"python ./STRcount/parse_gaf.py --input {out_dir}tmp/genome_str_graph.gfa {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
+    parse_gaf = os.system(f"python ./STRcount/parse_gaf.py --input {out_dir}tmp/alignment.gaf {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
 
     if parse_gaf == 0:
         logging.info("A read wise count has been generated")
