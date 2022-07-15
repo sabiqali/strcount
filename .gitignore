@@ -1,1 +1,3 @@
 dist/*
+build/*
+STRcount.egg-info/*
