@@ -1,0 +1,1 @@
+from STRcount_wrapper import main

@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import logging
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--reference', help='the reference from which the STR Graph will be generated', required=True)
@@ -37,65 +38,69 @@ id_thres = args.precise_clipping
 
 cwd = os.getcwd()
 
-if min_id:
-    min_id_arg = f"--min-identity {min_id}"
-else:
-    min_id_arg = ""
+def main():
+    if min_id:
+        min_id_arg = f"--min-identity {min_id}"
+    else:
+        min_id_arg = ""
 
-if span:
-    span_arg = f"--write-non-spanned {span}"
-else:
-    span_arg = ""
+    if span:
+        span_arg = f"--write-non-spanned {span}"
+    else:
+        span_arg = ""
 
-if min_align:
-    min_align_arg = f"--min-aligned-fraction {min_align}"
-else:
-    min_align_arg = ""
+    if min_align:
+        min_align_arg = f"--min-aligned-fraction {min_align}"
+    else:
+        min_align_arg = ""
 
-if rep_orientation:
-    rep_orientation_arg = f"--repeat_orientation {rep_orientation}"
-else:
-    rep_orientation_arg = ""
+    if rep_orientation:
+        rep_orientation_arg = f"--repeat_orientation {rep_orientation}"
+    else:
+        rep_orientation_arg = ""
 
-if pre_orientation:
-    pre_orientation_arg = f"--prefix_orientation {pre_orientation}"
-else:
-    pre_orientation_arg = ""
+    if pre_orientation:
+        pre_orientation_arg = f"--prefix_orientation {pre_orientation}"
+    else:
+        pre_orientation_arg = ""
 
-if suf_orientation:
-    suf_orientation_arg = f"--suffix_orientation {suf_orientation}"
-else:
-    suf_orientation_arg = ""
+    if suf_orientation:
+        suf_orientation_arg = f"--suffix_orientation {suf_orientation}"
+    else:
+        suf_orientation_arg = ""
 
-if seed:
-    seed_arg = f"--multiseed-DP {seed}"
-else:
-    seed_arg = ""
+    if seed:
+        seed_arg = f"--multiseed-DP {seed}"
+    else:
+        seed_arg = ""
 
-if id_thres:
-    id_thres_arg = f"--precise-clipping {id_thres}"
-else:
-    id_thres_arg = ""
+    if id_thres:
+        id_thres_arg = f"--precise-clipping {id_thres}"
+    else:
+        id_thres_arg = ""
 
-create_tmp_folder = os.system(f"mkdir {out_dir}tmp")
+    create_tmp_folder = os.system(f"mkdir {out_dir}tmp")
 
-str_graph_generator = os.system(f"python ./STRcount/genome_str_graph_generator.py --ref {ref} --config {config_file} {rep_orientation_arg} {pre_orientation_arg} {suf_orientation_arg} > {out_dir}tmp/genome_str_graph.gfa")
+    str_graph_generator = os.system(f"python ./STRcount/genome_str_graph_generator.py --ref {ref} --config {config_file} {rep_orientation_arg} {pre_orientation_arg} {suf_orientation_arg} > {out_dir}tmp/genome_str_graph.gfa")
 
-if str_graph_generator == 0:
-    print("STR Reference Graph has been generated")
-else: 
-    print("error::Error while Generating STR genome graph")
+    if str_graph_generator == 0:
+        logging.info("STR Reference Graph has been generated")
+    else: 
+        logging.error("Error while Generating STR genome graph")
 
-ga_align = os.system(f"GraphAligner {seed_arg} {id_thres_arg} -g {out_dir}tmp/genome_str_graph.gfa -f {reads} -a {out_dir}tmp/alignment.gaf -x vg")
+    ga_align = os.system(f"GraphAligner {seed_arg} {id_thres_arg} -g {out_dir}tmp/genome_str_graph.gfa -f {reads} -a {out_dir}tmp/alignment.gaf -x vg")
 
-if ga_align == 0:
-    print("Reads aligned to Reference Graph")
-else:
-    print("error::Error in aligning the reads to the reference graph")
+    if ga_align == 0:
+        logging.info("Reads aligned to Reference Graph")
+    else:
+        logging.error("Error in aligning the reads to the reference graph")
 
-parse_gaf = os.system(f"python ./STRcount/parse_gaf.py --input {out_dir}tmp/genome_str_graph.gfa {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
+    parse_gaf = os.system(f"python ./STRcount/parse_gaf.py --input {out_dir}tmp/genome_str_graph.gfa {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
 
-if parse_gaf == 0:
-    print("A read wise count has been generated")
-else:
-    print("error::Error in parsing the alignments")
+    if parse_gaf == 0:
+        logging.info("A read wise count has been generated")
+    else:
+        logging.error("Error in parsing the alignments")
+
+if __name__ == "__main__":
+    main()
