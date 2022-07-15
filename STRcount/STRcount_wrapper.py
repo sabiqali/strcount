@@ -81,7 +81,7 @@ def main():
 
     create_tmp_folder = os.system(f"mkdir {out_dir}tmp")
 
-    str_graph_generator = os.system(f"python ./STRcount/genome_str_graph_generator.py --ref {ref} --config {config_file} {rep_orientation_arg} {pre_orientation_arg} {suf_orientation_arg} > {out_dir}tmp/genome_str_graph.gfa")
+    str_graph_generator = os.system(f"python ./genome_str_graph_generator.py --ref {ref} --config {config_file} {rep_orientation_arg} {pre_orientation_arg} {suf_orientation_arg} > {out_dir}tmp/genome_str_graph.gfa")
 
     if str_graph_generator == 0:
         logging.info("STR Reference Graph has been generated")
@@ -95,7 +95,7 @@ def main():
     else:
         logging.error("Error in aligning the reads to the reference graph")
 
-    parse_gaf = os.system(f"python ./STRcount/parse_gaf.py --input {out_dir}tmp/alignment.gaf {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
+    parse_gaf = os.system(f"python ./parse_gaf.py --input {out_dir}tmp/alignment.gaf {min_id_arg} {min_align_arg} {span_arg} > {out_dir}{out_file}")
 
     if parse_gaf == 0:
         logging.info("A read wise count has been generated")
