@@ -41,7 +41,7 @@ To develop using STRcount, you will need to create a conda environment or python
 git clone https://github.com/sabiqali/strcount.git
 cd strcount
 python -m pip install -r requirements.txt
-python ./STRcount/STRcount_wrapper.py -h
+python src/STRcount/STRcount.py -h
 ```
 
 ## Config file format
@@ -50,14 +50,14 @@ python ./STRcount/STRcount_wrapper.py -h
  
  | chr | begin | end | name | repeat | prefix | suffix | 
  | --- | --- | --- | --- | --- | --- | --- | 
- | chr9 | 27573527 | 27573544 | c9orf72 | GGCCCC | CGGCAGCCGAACCCCAAACAGCCACCCGCCAGGATGCCGCCTCCTCACTCACCCACTCGCCACCGCCTGCGCCTCCGCCGCCGCGGGCGCAGGCACCGCAACCGCAGCCCCGCCCCGGGCCCGCCCCCGGGCCCGCCCCGACCACGCCCC | TAGCGCGCGACTCCTGAGTTCCAGAGCTTGCTACAGGCTGCGGTTGTTTCCCTCCTTGTTTTCTTCTGGTTAATCTTTATCAGGTCTTTTCTTGTTCACCCTCAGCGAGTACTGTGAGAGCAAGTAGTGGGGAGAGAGGGTGGGAAAAAC | 
+ | chr9 | 27573527 | 27573544 | c9orf72 | GGCCCC | <150bp_left_flank> | <150bp_right_flank> | 
  
  ## Usage
  
- If installed using pip or from source, you will be able to use it using ```STRcount``` else if you have installed to develop, you will be able to use it using ```python STRcount.py/STRcount_wrapper.py```
+ If installed using pip or from source, you will be able to use it using ```STRcount``` else if you have installed to develop, you will be able to use it using ```python src/STRcount/STRcount.py```
  
  ```
- STRcount.py [-h] --reference REFERENCE --fastq FASTQ --config CONFIG
+ STRcount [-h] --reference REFERENCE --fastq FASTQ --config CONFIG
                    --output OUTPUT [--min-identity MIN_IDENTITY]
                    [--min-aligned-fraction MIN_ALIGNED_FRACTION]
                    [--write-non-spanned]
