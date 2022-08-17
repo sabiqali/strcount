@@ -2,9 +2,10 @@
 
 import argparse
 import os
+from posixpath import split
 
 class GraphAlignment:
-    def __init__(self, read_name, strand, spanned, count, alignment_score, identity, aligned_fraction):
+    def __init__(self, read_name, strand, spanned, count, alignment_score, identity, aligned_fraction, name):
         self.read_name = read_name
         self.strand = strand
         self.spanned = spanned
@@ -12,6 +13,7 @@ class GraphAlignment:
         self.alignment_score = alignment_score
         self.identity = identity
         self.aligned_fraction = aligned_fraction
+        self.name = name
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', help='the input file which was generated from graphaligner', required=True)
@@ -25,6 +27,7 @@ input_file = open(args.input)
 alignments = dict()
 with open(args.input) as f:
     for record in f:
+        str_name = ""
         fields = record.rstrip().split("\t")
         read_id = fields[0].split(' ')[0] # remove FASTQ metadata that graphaligner emits
 
@@ -54,17 +57,18 @@ with open(args.input) as f:
             if s.find("suffix") >= 0:
                 has_suffix = True
             count += s.find("repeat") >= 0
+            str_name = s.split("_")[1] if s.find("repeat") else ""
 
         valid = has_prefix and has_suffix
         strand = fields[4]
         assert(strand == "+")
         if path_dir == "<":
             strand = "-"
-        ga = GraphAlignment(read_id, strand, valid, count, align_score, identity, query_af)
+        ga = GraphAlignment(read_id, strand, valid, count, align_score, identity, query_af, str_name)
         if (valid or args.write_non_spanned) and ga.identity > args.min_identity and ga.aligned_fraction > args.min_aligned_fraction:
             if ga.read_name not in alignments or alignments[ga.read_name].alignment_score < ga.alignment_score:
                 alignments[ga.read_name] = ga
 
-print("\t".join(["read_name","strand", "spanned", "count", "align_score", "identity", "query_aligned_fraction"]))
+print("\t".join(["read_name","str_name","strand", "spanned", "count", "align_score", "identity", "query_aligned_fraction"]))
 for ga in alignments.values():
-    print("%s\t%s\t%d\t%d\t%.1f\t%.3f\t%.3f" % (ga.read_name, ga.strand, ga.spanned, ga.count, ga.alignment_score, ga.identity, ga.aligned_fraction))
+    print("%s\t%s\t%d\t%d\t%.1f\t%.3f\t%.3f" % (ga.read_name, ga.name, ga.strand, ga.spanned, ga.count, ga.alignment_score, ga.identity, ga.aligned_fraction))
