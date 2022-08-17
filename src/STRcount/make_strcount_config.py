@@ -7,17 +7,20 @@ import sys
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--reference', type=str, required=True)
-    parser.add_argument('--restrict-motif', type=str, required=False)
-    parser.add_argument('--no-sequence', action='store_true')
+    parser.add_argument('--reference', type=str,help="The reference genome" ,required=True)
+    parser.add_argument('--file', type=str,help="The regions file with the information about the STRs" ,required=True)
+    parser.add_argument('--restrict-motif', type=str, help="Restrict any motifs",required=False)
+    parser.add_argument('--no-sequence', action='store_true', help="No flank output", required=False)
+    parser.add_argument('--flank-size', type=int, default=150, help="The flank size for each config entry", required=False)
     args = parser.parse_args()
+
     reference = pysam.FastaFile(args.reference)
-    flank_size = 150
+    flank_size = args.flank_size
 
     # print header
     print("chr\tbegin\tend\tname\trepeat\tprefix\tsuffix")
 
-    for line in sys.stdin:
+    for line in args.file:
 
         fields = line.rstrip().split()
         chrom = fields[1]
