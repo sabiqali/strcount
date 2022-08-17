@@ -4,7 +4,7 @@ import argparse
 import os
 import logging
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Software tool to analyse STR loci from long read data. STRcount can count the number of repeats in a repeat expansion and give you the count in a tabular format for further downstream analysis.')
 parser.add_argument('--reference', help='the reference from which the STR Graph will be generated', required=True)
 parser.add_argument('--fastq', help='the baseaclled reads in fastq format', required=True)
 parser.add_argument('--config', help='the config file', required=True)
