@@ -52,6 +52,10 @@ python src/STRcount/STRcount.py -h
  | --- | --- | --- | --- | --- | --- | --- | 
  | chr9 | 27573527 | 27573544 | c9orf72 | GGCCCC | <150bp_left_flank> | <150bp_right_flank> | 
  
+ This format is the same as the format used in STRique as found [here](https://strique.readthedocs.io/en/latest/examples/intro/#configuration). 
+ 
+ The 150bp flanking region is suggested, longer flanks will require more time to execute, smaller flanks will take less time but the results may be less accurate. 
+ 
  ## Usage
  
  If installed using pip or from source, you will be able to use it using ```STRcount``` else if you have installed to develop, you will be able to use it using ```python src/STRcount/STRcount.py```
