@@ -16,13 +16,15 @@ def main():
 
     reference = pysam.FastaFile(args.reference)
     flank_size = args.flank_size
+    str_fh = open(args.file)
+
+    str_file_header = str_fh.readline()
 
     # print header
     print("chr\tbegin\tend\tname\trepeat\tprefix\tsuffix")
 
-    for line in args.file:
-
-        fields = line.rstrip().split()
+    for line in str_fh:
+        fields = line.rstrip().split('\t')
         chrom = fields[1]
         if "bin" in fields[0] or "alt" in chrom or "random" in chrom or "chrUn" in chrom:
             continue
