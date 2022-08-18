@@ -39,19 +39,22 @@ print("H\tVN:Z:a.0")
 sides = dict()
 links = dict()
 
-c = 0
+counter1 = 0
 
 for chr in pysam.FastxFile(reference_file):
+    counter2 = 0
+    key_list = []
     for keys in configs_dict:
         if(chr.name == configs_dict[keys][0]):
-            c = c + 1
-            sides[chr.name] = "\t".join(["S", chr.name + "_before_prefix", chr.sequence[: int(begin)-(len(prefix)+1) ]]) + "\n" + "\t".join(["S", chr.name + "_prefix", chr.sequence[int(begin)-(len(prefix)+1) : int(begin)-1]]) + "\n" + "\t".join(["S", "repeat_" + configs_dict[keys][3], configs_dict[keys][4]]) + "\n" + "\t".join(["S", chr.name + "_suffix", chr.sequence[int(end)+1 : (int(end)+len(suffix)+1)]]) + "\n" + "\t".join(["S", chr.name + "_after_suffix", chr.sequence[int(end)+(len(suffix)+1) : ]])
-            #print("\t".join(["S", chr.name + "_prefix", chr.sequence[:int(begin)-1]]))
-            #print("\t".join(["S", "repeat" , chr.sequence[int(begin):int(end)]]))
-            #print("\t".join(["S", chr.name + "_suffix", chr.sequence[int(end)+1:]]))
-            links[chr.name] = "\t".join(["L", chr.name + "_before_prefix", "+", chr.name + "_prefix", prefix_orientation, "*" ]) + "\n" + "\t".join(["L", chr.name + "_prefix", prefix_orientation , "repeat_" + configs_dict[keys][3] , repeat_orientation , "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[keys][3] , repeat_orientation, "repeat_" + configs_dict[keys][3] , repeat_orientation, "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[keys][3] , repeat_orientation, chr.name + "_suffix", suffix_orientation, "*"]) + "\n" + "\t".join(["L", chr.name + "_suffix", suffix_orientation, chr.name + "_after_suffix", "+", "*"])
-        else:
-            sides[chr.name] = "\t".join(["S", chr.name, chr.sequence]) 
+            counter2 += 1
+            key_list.append(keys)
+
+    if counter2 == 1:
+        counter1 += 1
+        sides[chr.name] = "\t".join(["S", chr.name + "_before_prefix", chr.sequence[: int(configs_dict[key_list[0]][1])-(len(configs_dict[key_list[0]][5])+1) ]]) + "\n" + "\t".join(["S", chr.name + "_prefix", chr.sequence[int(configs_dict[key_list[0]][1])-(len(configs_dict[key_list[0]][5])+1) : int(configs_dict[key_list[0]][1])-1]]) + "\n" + "\t".join(["S", "repeat_" + configs_dict[key_list[0]][3], configs_dict[key_list[0]][4]]) + "\n" + "\t".join(["S", chr.name + "_suffix", chr.sequence[int(configs_dict[key_list[0]][2])+1 : (int(configs_dict[key_list[0]][2])+len(configs_dict[key_list[0]][6])+1)]]) + "\n" + "\t".join(["S", chr.name + "_after_suffix", chr.sequence[int(configs_dict[key_list[0]][2])+(len(configs_dict[key_list[0]][6])+1) : ]])
+        links[chr.name] = "\t".join(["L", chr.name + "_before_prefix", "+", chr.name + "_prefix", prefix_orientation, "*" ]) + "\n" + "\t".join(["L", chr.name + "_prefix", prefix_orientation , "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation , "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, chr.name + "_suffix", suffix_orientation, "*"]) + "\n" + "\t".join(["L", chr.name + "_suffix", suffix_orientation, chr.name + "_after_suffix", "+", "*"])
+    else:
+        sides[chr.name] = "\t".join(["S", chr.name, chr.sequence])      
 
 for key in sides:
     print(sides[key])
