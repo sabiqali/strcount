@@ -57,7 +57,11 @@ with open(args.input) as f:
             if s.find("suffix") >= 0:
                 has_suffix = True
             count += s.find("repeat") >= 0
-            str_name = s.split("_")[1] if s.find("repeat") else ""
+            #print(s)
+            if s.split("_")[0] == "repeat":
+                #print("test")
+                str_name = s.split("_")[1]
+            #str_name = s.split("_")[1] if s.find("repeat")
 
         valid = has_prefix and has_suffix
         strand = fields[4]
@@ -71,4 +75,4 @@ with open(args.input) as f:
 
 print("\t".join(["read_name","str_name","strand", "spanned", "count", "align_score", "identity", "query_aligned_fraction"]))
 for ga in alignments.values():
-    print("%s\t%s\t%d\t%d\t%.1f\t%.3f\t%.3f" % (ga.read_name, ga.name, ga.strand, ga.spanned, ga.count, ga.alignment_score, ga.identity, ga.aligned_fraction))
+    print("%s\t%s\t%s\t%d\t%d\t%.1f\t%.3f\t%.3f" % (ga.read_name, ga.name, ga.strand, ga.spanned, ga.count, ga.alignment_score, ga.identity, ga.aligned_fraction))

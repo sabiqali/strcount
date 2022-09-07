@@ -52,7 +52,7 @@ for chr in pysam.FastxFile(reference_file):
     if counter2 == 1:
         counter1 += 1
         sides[chr.name] = "\t".join(["S", chr.name + "_before_prefix", chr.sequence[: int(configs_dict[key_list[0]][1])-(len(configs_dict[key_list[0]][5])+1) ]]) + "\n" + "\t".join(["S", chr.name + "_prefix", chr.sequence[int(configs_dict[key_list[0]][1])-(len(configs_dict[key_list[0]][5])+1) : int(configs_dict[key_list[0]][1])-1]]) + "\n" + "\t".join(["S", "repeat_" + configs_dict[key_list[0]][3], configs_dict[key_list[0]][4]]) + "\n" + "\t".join(["S", chr.name + "_suffix", chr.sequence[int(configs_dict[key_list[0]][2])+1 : (int(configs_dict[key_list[0]][2])+len(configs_dict[key_list[0]][6])+1)]]) + "\n" + "\t".join(["S", chr.name + "_after_suffix", chr.sequence[int(configs_dict[key_list[0]][2])+(len(configs_dict[key_list[0]][6])+1) : ]])
-        links[chr.name] = "\t".join(["L", chr.name + "_before_prefix", "+", chr.name + "_prefix", prefix_orientation, "*" ]) + "\n" + "\t".join(["L", chr.name + "_prefix", prefix_orientation , "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation , "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "*"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, chr.name + "_suffix", suffix_orientation, "*"]) + "\n" + "\t".join(["L", chr.name + "_suffix", suffix_orientation, chr.name + "_after_suffix", "+", "*"])
+        links[chr.name] = "\t".join(["L", chr.name + "_before_prefix", "+", chr.name + "_prefix", prefix_orientation, "0M" ]) + "\n" + "\t".join(["L", chr.name + "_prefix", prefix_orientation , "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation , "0M"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, "0M"]) + "\n" + "\t".join(["L", "repeat_" + configs_dict[key_list[0]][3] , repeat_orientation, chr.name + "_suffix", suffix_orientation, "0M"]) + "\n" + "\t".join(["L", chr.name + "_suffix", suffix_orientation, chr.name + "_after_suffix", "+", "0M"])
     else:
         sides[chr.name] = "\t".join(["S", chr.name, chr.sequence])      
 
@@ -62,5 +62,5 @@ for key in sides:
 for key in links:
     print(links[key])       
 
-if(c==0):
+if(counter1==0):
     print("Error : The chromosome of the config file was not found in the reference, please double check your inputs.")
